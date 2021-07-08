@@ -24,12 +24,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("v1/users/sign-up").permitAll()
+                .antMatchers("v1/users/**").permitAll()
                 .and()
                 .httpBasic()
                 .and()
                 .csrf().disable()
-
         ;
     }
     @Override
