@@ -3,12 +3,14 @@ package com.example.demo.controller;
 import com.example.demo.exceptionhandling.DataBaseException;
 import com.example.demo.exceptionhandling.ProductNotFoundException;
 import com.example.demo.model.Product;
-import com.example.demo.model.ProductDto;
+import com.example.demo.dto.product.ProductDto;
 import com.example.demo.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -20,7 +22,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<Object> getAllProducts() throws DataBaseException {
+    public ResponseEntity<List<ProductDto>> getAllProducts() throws DataBaseException {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
 

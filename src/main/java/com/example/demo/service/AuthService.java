@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.CustomerSigInDto;
+import com.example.demo.dto.customer.CustomerSigInDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

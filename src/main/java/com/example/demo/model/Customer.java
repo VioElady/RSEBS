@@ -7,11 +7,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "customer")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Customer {
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

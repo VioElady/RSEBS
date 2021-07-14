@@ -14,6 +14,11 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "customer_id")
+
+    private Customer customer;
+
     @Column(name = "title")
     private String title;
 

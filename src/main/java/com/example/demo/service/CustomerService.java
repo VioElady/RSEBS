@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.CustomerRequestDto;
-import com.example.demo.dto.CustomerResponseDto;
+import com.example.demo.dto.customer.CustomerRequestDto;
+import com.example.demo.dto.customer.CustomerResponseDto;
 import com.example.demo.model.Customer;
 import com.example.demo.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;

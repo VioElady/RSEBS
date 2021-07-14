@@ -5,7 +5,7 @@ import com.example.demo.dao.ProductDao;
 import com.example.demo.exceptionhandling.DataBaseException;
 import com.example.demo.exceptionhandling.ProductNotFoundException;
 import com.example.demo.model.Product;
-import com.example.demo.model.ProductDto;
+import com.example.demo.dto.product.ProductDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,7 @@ public class ProductService {
     public List<ProductDto> getAllProducts() throws DataBaseException {
         List<Product> products;
         try {
-            products = new ArrayList<>(productDao.findAll());
+            products = productDao.findAll();
         } catch (Exception e) {
             throw new DataBaseException("Data base issue!", INTERNAL_SERVER_ERROR);
         }

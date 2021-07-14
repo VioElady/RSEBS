@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.CustomerRequestDto;
-import com.example.demo.dto.CustomerResponseDto;
-import com.example.demo.dto.CustomerSigInDto;
+import com.example.demo.dto.customer.CustomerRequestDto;
+import com.example.demo.dto.customer.CustomerResponseDto;
+import com.example.demo.dto.customer.CustomerSigInDto;
 import com.example.demo.service.AuthService;
 import com.example.demo.service.CustomerService;
 import lombok.RequiredArgsConstructor;
