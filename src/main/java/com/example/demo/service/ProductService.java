@@ -8,6 +8,7 @@ import com.example.demo.model.Product;
 import com.example.demo.dto.product.ProductDto;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -43,9 +44,19 @@ public class ProductService {
         return converter.modelToDTO(products);
     }
 
+    //    public void addProduct(ProductDto productDto) {
+    //        validateProduct(productDto);
+    //        productDao.save(converter.dtoToModel(productDto));
+     //    }
+
+
+
     public void addProduct(ProductDto productDto) {
         validateProduct(productDto);
-        productDao.save(converter.dtoToModel(productDto));
+        Product product = converter.dtoToModel(productDto);
+        SecurityContextHolder.getContext().getAuthentication();
+        product.setCustomer(null);
+        productDao.save(product);
     }
 
     public void updateProduct(Long id, ProductDto productDto) throws ProductNotFoundException {
@@ -77,12 +88,12 @@ public class ProductService {
         throw new ProductNotFoundException("Product not found!", INTERNAL_SERVER_ERROR);
     }
 
-    private void validateProduct(ProductDto productDto) throws IllegalArgumentException{
+    private void validateProduct(ProductDto productDto) throws IllegalArgumentException {
         validateString(productDto.getTitle(), "You are trying to set invalid value for product name!");
         validateString(productDto.getDescription(), "You are trying to set invalid value for product genre!");
     }
 
-    private void validateString(String string, String errorMessage) throws IllegalArgumentException{
+    private void validateString(String string, String errorMessage) throws IllegalArgumentException {
         if (string.isEmpty() || string.contains(" ") || string.length() <= 1 || string.matches(".*\\d.*"))
             throw new IllegalArgumentException(errorMessage);
     }
