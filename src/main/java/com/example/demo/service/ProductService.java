@@ -28,6 +28,7 @@ public class ProductService {
 
     private final ProductDao productDao;
     private final ProductConverter converter;
+    private final CustomerService customerService;
 
     public Product getProductById(Long id) throws ProductNotFoundException {
         Optional<Product> product;
@@ -51,8 +52,7 @@ public class ProductService {
     public void addProduct(ProductDto productDto) {
         validateProduct(productDto);
         Product product = converter.dtoToModel(productDto);
-        SecurityContextHolder.getContext().getAuthentication();
-        product.setCustomer();
+        product.setCustomer(customerService.loadByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         productDao.save(product);
 
     }

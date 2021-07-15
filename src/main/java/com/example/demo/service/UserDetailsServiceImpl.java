@@ -25,9 +25,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new User(customer.getUsername(), customer.getPassword(), new ArrayList<>());
     }
 
-    public UserDetails loadPasswordByUsername(String password, String username) throws UsernameNotFoundException {
-        Customer customer = customerRepository.findByUsernameAndPassword(password, username).orElseThrow(() ->
-                new UsernameNotFoundException("User not found with this username or password..."));
-        return new User(customer.getPassword(), customer.getUsername(), new ArrayList<>());
-    }
+
+
+
+
 }

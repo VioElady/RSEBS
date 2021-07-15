@@ -5,6 +5,7 @@ import com.example.demo.dto.customer.CustomerResponseDto;
 import com.example.demo.model.Customer;
 import com.example.demo.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +32,10 @@ public class CustomerService {
                 .email(customerResponseDto.getEmail())
                 .username(customerResponseDto.getUsername())
                 .build();
+    }
+
+    public Customer loadByUsername(String username) throws UsernameNotFoundException {
+        return customerRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException("User not found with this username "));
     }
 }
