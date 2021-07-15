@@ -4,11 +4,14 @@ import com.example.demo.converter.ProductConverter;
 import com.example.demo.dao.ProductDao;
 import com.example.demo.exceptionhandling.DataBaseException;
 import com.example.demo.exceptionhandling.ProductNotFoundException;
+import com.example.demo.model.Customer;
 import com.example.demo.model.Product;
 import com.example.demo.dto.product.ProductDto;
+import com.example.demo.repository.CustomerRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -44,19 +47,14 @@ public class ProductService {
         return converter.modelToDTO(products);
     }
 
-    //    public void addProduct(ProductDto productDto) {
-    //        validateProduct(productDto);
-    //        productDao.save(converter.dtoToModel(productDto));
-     //    }
-
-
 
     public void addProduct(ProductDto productDto) {
         validateProduct(productDto);
         Product product = converter.dtoToModel(productDto);
         SecurityContextHolder.getContext().getAuthentication();
-        product.setCustomer(null);
+        product.setCustomer();
         productDao.save(product);
+
     }
 
     public void updateProduct(Long id, ProductDto productDto) throws ProductNotFoundException {
