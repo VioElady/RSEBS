@@ -34,7 +34,7 @@ public class CustomerService {
                 .build();
     }
 
-    public Customer loadByUsername(String username) throws UsernameNotFoundException {
+    public Customer FindUserByUsername (String username) throws UsernameNotFoundException {
         return customerRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with this username "));
     }

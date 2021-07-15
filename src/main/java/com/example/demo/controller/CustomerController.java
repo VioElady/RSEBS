@@ -37,3 +37,36 @@ public class CustomerController {
                         save(customerRequestDto));
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//{
+//        "id": 2,
+//        "customer": {
+//        "id": 2,
+//        "username": "ella",
+//        "email": "ellamark",
+//        "password": "$2a$12$7wzBLh2osRNtZ.NC9b3aae58vVgutSYCj89SNJEELonGS0UNG6fUa"
+//        },
+//        "title": "chess",
+//        "description": "bad",
+//        "price": 45.0
+//        }

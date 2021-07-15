@@ -52,7 +52,7 @@ public class ProductService {
     public void addProduct(ProductDto productDto) {
         validateProduct(productDto);
         Product product = converter.dtoToModel(productDto);
-        product.setCustomer(customerService.loadByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        product.setCustomer(customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         productDao.save(product);
 
     }

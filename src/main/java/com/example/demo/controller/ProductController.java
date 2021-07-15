@@ -32,14 +32,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> addProduct(@RequestBody ProductDto productDto){
+    public ResponseEntity<Object> addProduct(@RequestBody ProductDto productDto) {
         productService.addProduct(productDto);
         return new ResponseEntity<>("Product \"" + productDto.getTitle() + "\" has been added successfully!", HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable Long id, @RequestBody ProductDto productDto) throws ProductNotFoundException {
-        productService.updateProduct(id,productDto);
+        productService.updateProduct(id, productDto);
         return new ResponseEntity<>("Product with id \"" + id + "\" has been updated successfully!", HttpStatus.OK);
     }
 
