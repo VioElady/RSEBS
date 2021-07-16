@@ -7,14 +7,11 @@ import com.example.demo.exceptionhandling.ProductNotFoundException;
 import com.example.demo.model.Customer;
 import com.example.demo.model.Product;
 import com.example.demo.dto.product.ProductDto;
-import com.example.demo.repository.CustomerRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,7 +31,6 @@ public class ProductService {
         Optional<Product> product;
         product = productDao.findById(id);
         isPresent(product);
-
         return product.get();
     }
 
@@ -48,11 +44,12 @@ public class ProductService {
         return converter.modelToDTO(products);
     }
 
-
     public void addProduct(ProductDto productDto) {
         validateProduct(productDto);
+
         Product product = converter.dtoToModel(productDto);
         product.setCustomer(customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+
         productDao.save(product);
 
     }
@@ -61,23 +58,29 @@ public class ProductService {
         Optional<Product> receivedProduct = productDao.findById(id);
         isPresent(receivedProduct);
         validateProduct(productDto);
-        Product toBeUpdated = receivedProduct.get();
-        toBeUpdated.setTitle(productDto.getTitle());
-        toBeUpdated.setPrice(productDto.getPrice());
-        toBeUpdated.setDescription(productDto.getDescription());
 
+        Product toBeUpdated = receivedProduct.get();
+        Customer customer = customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (toBeUpdated.getCustomer().getId() == customer.getId()) {
+            toBeUpdated.setTitle(productDto.getTitle());
+            toBeUpdated.setPrice(productDto.getPrice());
+            toBeUpdated.setDescription(productDto.getDescription());
+        } else
+            throw new ProductNotFoundException("Product not found!", INTERNAL_SERVER_ERROR);
         productDao.save(toBeUpdated);
     }
 
     public void deleteProduct(Long id) throws DataBaseException, ProductNotFoundException {
         Optional<Product> product = productDao.findById(id);
         isPresent(product);
-        try {
+        Product toBeDelete = product.get();
+        Customer customer = customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (toBeDelete.getCustomer().getId() == customer.getId()) {
             productDao.deleteById(id);
-        } catch (Exception e) {
+        } else
             throw new DataBaseException("Data Source issue, could not delete product", INTERNAL_SERVER_ERROR);
-        }
     }
+
 
     private void isPresent(Optional<Product> optionalProduct) throws ProductNotFoundException {
         if (optionalProduct.isPresent()) {

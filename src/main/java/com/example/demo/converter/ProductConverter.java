@@ -3,7 +3,6 @@ package com.example.demo.converter;
 import com.example.demo.model.Product;
 import com.example.demo.dto.product.ProductDto;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +21,6 @@ public class ProductConverter {
     public List<ProductDto> modelToDTO(List<Product> products) {
         return products.stream().map(this::modelToDTO).collect(Collectors.toList());
     }
-
 
     public Product dtoToModel(ProductDto productDto) {
         Product product = new Product();
