@@ -27,11 +27,11 @@ public class ProductService {
     private final ProductConverter converter;
     private final CustomerService customerService;
 
-    public Product getProductById(Long id) throws ProductNotFoundException {
+    public ProductDto getProductById(Long id) throws ProductNotFoundException {
         Optional<Product> product;
         product = productDao.findById(id);
         isPresent(product);
-        return product.get();
+        return converter.modelToDTO(product.get());
     }
 
     public List<ProductDto> getAllProducts() throws DataBaseException {
@@ -44,14 +44,22 @@ public class ProductService {
         return converter.modelToDTO(products);
     }
 
+    public void deleteProduct(Long id) throws DataBaseException, ProductNotFoundException {
+        Optional<Product> product = productDao.findById(id);
+        isPresent(product);
+        Product toBeDelete = product.get();
+        Customer customer = customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (toBeDelete.getCustomer().getId() == customer.getId()) {
+            productDao.deleteById(id);
+        } else
+            throw new DataBaseException("Data Source issue, could not delete product", INTERNAL_SERVER_ERROR);
+    }
+
     public void addProduct(ProductDto productDto) {
         validateProduct(productDto);
-
         Product product = converter.dtoToModel(productDto);
         product.setCustomer(customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
-
         productDao.save(product);
-
     }
 
     public void updateProduct(Long id, ProductDto productDto) throws ProductNotFoundException {
@@ -69,18 +77,6 @@ public class ProductService {
             throw new ProductNotFoundException("Product not found!", INTERNAL_SERVER_ERROR);
         productDao.save(toBeUpdated);
     }
-
-    public void deleteProduct(Long id) throws DataBaseException, ProductNotFoundException {
-        Optional<Product> product = productDao.findById(id);
-        isPresent(product);
-        Product toBeDelete = product.get();
-        Customer customer = customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (toBeDelete.getCustomer().getId() == customer.getId()) {
-            productDao.deleteById(id);
-        } else
-            throw new DataBaseException("Data Source issue, could not delete product", INTERNAL_SERVER_ERROR);
-    }
-
 
     private void isPresent(Optional<Product> optionalProduct) throws ProductNotFoundException {
         if (optionalProduct.isPresent()) {
