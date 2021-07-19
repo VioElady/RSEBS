@@ -7,11 +7,17 @@ import com.example.demo.exceptionhandling.ProductNotFoundException;
 import com.example.demo.model.Customer;
 import com.example.demo.model.Product;
 import com.example.demo.dto.product.ProductDto;
+import com.example.demo.repository.ProductRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +28,10 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @Data
 @RequiredArgsConstructor
 public class ProductService {
+
+
+//    @Autowired
+    ProductRepository productRepository;
 
     private final ProductDao productDao;
     private final ProductConverter converter;
@@ -94,5 +104,16 @@ public class ProductService {
         if (string.isEmpty() || string.contains(" ") || string.length() <= 1 || string.matches(".*\\d.*"))
             throw new IllegalArgumentException(errorMessage);
     }
+
+    public Page<Product> getProducts(Pageable page) {
+        return productRepository.findAll(page);
+    }
+
+//    public Page<Product> getProducts(int pageNumber, int pageSize){
+//        Pageable page = PageRequest.of(pageNumber,pageSize);
+//        return productRepository.findAll(page);
+//    }
+
+
 
 }

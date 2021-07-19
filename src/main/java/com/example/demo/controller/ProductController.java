@@ -6,6 +6,10 @@ import com.example.demo.model.Product;
 import com.example.demo.dto.product.ProductDto;
 import com.example.demo.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +23,9 @@ import java.util.List;
 @RequestMapping("/api/products")
 
 public class ProductController {
+//    @Autowired
+//    ProductService productService;
+
     private final ProductService productService;
 
     @GetMapping
@@ -48,4 +55,15 @@ public class ProductController {
         productService.deleteProduct(id);
         return new ResponseEntity<>("Product with id \"" + id + "\" has been deleted successfully!", HttpStatus.OK);
     }
+
+    @GetMapping("/pagination")
+    Page<Product> getProducts(Pageable page){
+        return productService.getProducts(page);
+    }
+
+//    @GetMapping("/pagination")
+//    Page<Product>getProducts(@RequestParam int pageSize, @RequestParam int pageNumber){
+//        return productService.getProducts(pageNumber,pageSize);
+//    }
+
 }
