@@ -29,9 +29,9 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @RequiredArgsConstructor
 public class ProductService {
 
-
-//    @Autowired
+    @Autowired
     ProductRepository productRepository;
+
 
     private final ProductDao productDao;
     private final ProductConverter converter;
@@ -113,7 +113,5 @@ public class ProductService {
 //        Pageable page = PageRequest.of(pageNumber,pageSize);
 //        return productRepository.findAll(page);
 //    }
-
-
 
 }

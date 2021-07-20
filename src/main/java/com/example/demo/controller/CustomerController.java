@@ -18,13 +18,13 @@ public class CustomerController {
     private final CustomerService customerService;
 
     //@ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/sign-in")
-    public ResponseEntity<Object> signIn(@RequestBody CustomerSigInDto customerSignIntDto) {
-        authService.signIn(customerSignIntDto);
-        return ResponseEntity
-                .ok()
-                .body(HttpStatus.OK);
-    }
+//    @PostMapping("/sign-in")
+//    public ResponseEntity<Object> signIn(@RequestBody CustomerSigInDto customerSignIntDto) {
+//        authService.signIn(customerSignIntDto);
+//        return ResponseEntity
+//                .ok()
+//                .body(HttpStatus.OK);
+//    }
 
     @PostMapping("/sign-up")
     public ResponseEntity<CustomerResponseDto> signUp(@RequestBody CustomerRequestDto customerRequestDto) {

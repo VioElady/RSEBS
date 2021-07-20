@@ -22,7 +22,7 @@ public class DemoApplication {
         return args -> IntStream.rangeClosed(1, 30).forEach(i -> {
             Product product = new Product();
             product.setDescription("description" + i);
-            product.setTitle("Title" + i);
+            product.setTitle("title" + i);
             productRepository.save(product);
         });
     }
