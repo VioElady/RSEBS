@@ -31,6 +31,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        http.csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers("/api/auth/sign-up", "/api/products","/api/auth/sign-in\"").permitAll()
+//                .antMatchers("/css/**", "/js/**", "/images/**", "/webjars/**", "/favicon.ico").permitAll()
+//                .antMatchers("/swagger*/**", "/api-docs/**", "/", "/csrf").permitAll()
+//                .anyRequest()
+//                .authenticated()
+//                .and().sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+//                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);;
+
 //        http
 //                .authorizeRequests()
 //                .antMatchers("v1/users/**").permitAll()
@@ -39,14 +50,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .and()
 //                .httpBasic()
 //                .and()
-//                .csrf().disable()
+//                .csrf().disable();
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/swagger-ui.html", "/swagger-ui/**").authenticated()
+                .antMatchers("/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .antMatchers("api/products/**").authenticated()
-                .anyRequest().authenticated();
+               .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -73,3 +84,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
+
+

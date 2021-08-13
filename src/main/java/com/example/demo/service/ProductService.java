@@ -55,7 +55,7 @@ public class ProductService {
     }
 
 
-    public List<ProductDto> getAllProductsForUser(Long id) throws DataBaseException {
+    public List<ProductDto> getAllProductsForUser() throws DataBaseException {
         List<Product> products;
         try {
             products = productRepository.findProductsByCustomer(customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));

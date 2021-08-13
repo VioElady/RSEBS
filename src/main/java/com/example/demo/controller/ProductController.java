@@ -37,9 +37,9 @@ public class ProductController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<ProductDto>> getProductForUser(@PathVariable Long id) throws DataBaseException {
-        return new ResponseEntity<>(productService.getAllProductsForUser(id), HttpStatus.OK);
+    @GetMapping("/user")
+    public ResponseEntity<List<ProductDto>> getProductForUser() throws DataBaseException {
+        return new ResponseEntity<>(productService.getAllProductsForUser(), HttpStatus.OK);
     }
 
     @PostMapping

@@ -21,13 +21,13 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-    @Bean
-     CommandLineRunner run(ProductRepository productRepository) {
-        return args -> IntStream.rangeClosed(1, 30).forEach(i -> {
-            Product product = new Product();
-            product.setDescription("description" + i);
-            product.setTitle("title" + i);
-            productRepository.save(product);
-        });
-    }
+//    @Bean
+//     CommandLineRunner run(ProductRepository productRepository) {
+//        return args -> IntStream.rangeClosed(1, 30).forEach(i -> {
+//            Product product = new Product();
+//            product.setDescription("description" + i);
+//            product.setTitle("title" + i);
+//            productRepository.save(product);
+//        });
+//    }
 }

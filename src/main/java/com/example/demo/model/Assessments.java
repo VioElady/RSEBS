@@ -1,31 +1,23 @@
-//package com.example.demo.model;
-//
-//import lombok.*;
-//
-//import javax.persistence.*;
-//import java.util.Set;
-//
-//@Getter
-//@Setter
-//@Entity
-//@Table(name = "assessments")
-//@Builder
-//@NoArgsConstructor
-//@AllArgsConstructor
-//public class Assessments {
-//
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//
-//    @Column(name = "post_id", unique = true)
-//    private Long postId;
-//
-//    @Column(name = "user_id", unique = true)
-//    private Long userId;
-//
-//    @Column(name = "like")
-//    private boolean like;
-//
-//
-//}
-//
+package com.example.demo.model;
+import javax.persistence.*;
+import lombok.Data;
+
+@Data
+@Entity
+@Table(name = "assessments")
+public class Assessments {
+
+    @EmbeddedId
+    private AssessmentID id = new AssessmentID();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("productId")
+    private Product product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("customerId")
+    private Customer customer;
+
+    @Column(name = "likes")
+    private Boolean likes;
+}

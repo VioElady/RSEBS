@@ -39,7 +39,7 @@ For building and running the application you need:
    `
 ----
 ##URL
-http://localhost:8080/swagger-ui.html
+http://localhost:9092/swagger-ui.html
 
 ----
 
