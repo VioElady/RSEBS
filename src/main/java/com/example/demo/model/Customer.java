@@ -9,11 +9,11 @@ import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+
 @Entity
 @Builder
 @AllArgsConstructor
+@Data
 
 @Table(name = "customer",
         uniqueConstraints = {
