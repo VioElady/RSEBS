@@ -51,6 +51,16 @@ public class ProductService {
         return converter.modelToDTO(products);
     }
 
+    public List<ProductDto> getAllProductsForUser(Long id) throws DataBaseException {
+        List<Product> products;
+        try {
+            products = productRepository.findProductsByCustomer(customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            throw new DataBaseException("Data base issue!", INTERNAL_SERVER_ERROR);
+        }
+        return converter.modelToDTO(products);
+    }
+
     public void addProduct(ProductDto productDto) {
         validateProduct(productDto);
         Product product = converter.dtoToModel(productDto);

@@ -31,6 +31,11 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<List<ProductDto>> getProductForUser(@PathVariable Long id) throws DataBaseException {
+        return new ResponseEntity<>(productService.getAllProductsForUser(id),HttpStatus.OK);
+    }
+
     @PostMapping
     public ResponseEntity<Object> addProduct(@RequestBody ProductDto productDto) {
         productService.addProduct(productDto);
