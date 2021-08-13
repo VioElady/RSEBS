@@ -6,20 +6,25 @@ import com.example.demo.model.Product;
 import com.example.demo.dto.product.ProductDto;
 import com.example.demo.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+
 @RequiredArgsConstructor
-@RestController
+@org.springframework.web.bind.annotation.RestController
+
 @RequestMapping("/api/products")
 
 public class ProductController {
-    private final ProductService productService;
+
+    @Autowired
+    ProductService productService;
+
 
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProducts() throws DataBaseException {
@@ -27,13 +32,13 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ProductDto getProductById(@PathVariable Long id) throws ProductNotFoundException {
-        return productService.getProductById(id);
+    public ResponseEntity<List<ProductDto>> getProductForUser(@PathVariable Long id) throws DataBaseException {
+        return new ResponseEntity<>(productService.getAllProductsForUser(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<ProductDto>> getProductForUser(@PathVariable Long id) throws DataBaseException {
-        return new ResponseEntity<>(productService.getAllProductsForUser(id),HttpStatus.OK);
+    public ProductDto getProductById(@PathVariable Long id) throws ProductNotFoundException {
+        return productService.getProductById(id);
     }
 
     @PostMapping
@@ -54,9 +59,15 @@ public class ProductController {
         return new ResponseEntity<>("Product with id \"" + id + "\" has been deleted successfully!", HttpStatus.OK);
     }
 
+
     @GetMapping("/pagination")
-    Page<Product> getProducts(Pageable page) {
+    Page<Product> getProducts(Pageable page){
         return productService.getProducts(page);
     }
+
+//    @GetMapping("/pagination")
+//    Page<Product>getProducts(@RequestParam int pageSize, @RequestParam int pageNumber){
+//        return productService.getProducts(pageNumber,pageSize);
+//    }
 
 }

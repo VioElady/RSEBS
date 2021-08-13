@@ -3,7 +3,7 @@ package com.example.demo.config;
 import com.example.demo.jwt.AuthEntryPointJwt;
 import com.example.demo.jwt.AuthTokenFilter;
 import com.example.demo.service.UserDetailsServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,22 +13,43 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Configuration
 @EnableWebSecurity
+@Configuration
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(
-        // securedEnabled = true,
-        // jsr250Enabled = true,
         prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private AuthEntryPointJwt unauthorizedHandler;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final AuthEntryPointJwt unauthorizedHandler;
+
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeRequests()
+//                .antMatchers("v1/users/**").permitAll()
+//                .antMatchers("/swagger-ui.html", "/swagger-ui/**").authenticated()
+//                .antMatchers("api/products/**").authenticated()
+//                .and()
+//                .httpBasic()
+//                .and()
+//                .csrf().disable()
+        http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/swagger-ui.html", "/swagger-ui/**").authenticated()
+                .antMatchers("api/products/**").authenticated()
+                .anyRequest().authenticated();
+
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
@@ -49,17 +70,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/test/**").authenticated()
-                .anyRequest().authenticated();
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
 }

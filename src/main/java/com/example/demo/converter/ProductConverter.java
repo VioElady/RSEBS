@@ -4,12 +4,14 @@ import com.example.demo.model.Product;
 import com.example.demo.dto.product.ProductDto;
 import org.springframework.stereotype.Component;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 public class ProductConverter {
     public ProductDto modelToDTO(Product product) {
         ProductDto productDto = new ProductDto();
+       // productDto.setId(product.getId());
         productDto.setTitle(product.getTitle());
         productDto.setDescription(product.getDescription());
         productDto.setPrice(product.getPrice());
@@ -23,6 +25,7 @@ public class ProductConverter {
 
     public Product dtoToModel(ProductDto productDto) {
         Product product = new Product();
+       // product.setId(productDto.getId());
         product.setDescription(productDto.getDescription());
         product.setTitle(productDto.getTitle());
         product.setPrice(productDto.getPrice());

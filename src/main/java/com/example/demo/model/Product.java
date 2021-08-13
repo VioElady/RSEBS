@@ -1,20 +1,26 @@
 package com.example.demo.model;
+
 import lombok.Data;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
 @Table(name = "products")
+
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+//    @ManyToMany(mappedBy = "assessments")
+//    Set<Customer> assessments;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id")
+
     private Customer customer;
 
     @Column(name = "title")
@@ -25,11 +31,4 @@ public class Product {
 
     @Column(name = "price")
     private Double price;
-
-    @OneToMany(
-            mappedBy = "product",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
-    )
-    private List<Assessments> assessments = new ArrayList<>();
 }

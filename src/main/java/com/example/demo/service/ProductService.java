@@ -8,14 +8,16 @@ import com.example.demo.model.Customer;
 import com.example.demo.model.Product;
 import com.example.demo.dto.product.ProductDto;
 import com.example.demo.repository.ProductRepository;
-import javassist.NotFoundException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,11 +29,22 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @RequiredArgsConstructor
 public class ProductService {
 
+    @Autowired
     ProductRepository productRepository;
 
     private final ProductDao productDao;
     private final ProductConverter converter;
     private final CustomerService customerService;
+
+    public List<ProductDto> getAllProductsForUser(Long id) throws DataBaseException {
+        List<Product> products;
+        try {
+            products = productRepository.findProductsByCustomer(customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
+        } catch (Exception e) {
+            throw new DataBaseException("Data base issue!", INTERNAL_SERVER_ERROR);
+        }
+        return converter.modelToDTO(products);
+    }
 
     public ProductDto getProductById(Long id) throws ProductNotFoundException {
         Optional<Product> product;
@@ -42,7 +55,6 @@ public class ProductService {
 
     public List<ProductDto> getAllProducts() throws DataBaseException {
         List<Product> products;
-        productRepository.findProductsByCustomer(SecurityContextHolder.getContext().getAuthentication().getName());
         try {
             products = productDao.findAll();
         } catch (Exception e) {
@@ -51,14 +63,15 @@ public class ProductService {
         return converter.modelToDTO(products);
     }
 
-    public List<ProductDto> getAllProductsForUser(Long id) throws DataBaseException {
-        List<Product> products;
-        try {
-            products = productRepository.findProductsByCustomer(customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
-        } catch (Exception e) {
-            throw new DataBaseException("Data base issue!", INTERNAL_SERVER_ERROR);
-        }
-        return converter.modelToDTO(products);
+    public void deleteProduct(Long id) throws DataBaseException, ProductNotFoundException {
+        Optional<Product> product = productDao.findById(id);
+        isPresent(product);
+        Product toBeDelete = product.get();
+        Customer customer = customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+        if (toBeDelete.getCustomer().getId() == customer.getId()) {
+            productDao.deleteById(id);
+        } else
+            throw new DataBaseException("Data Source issue, could not delete product", INTERNAL_SERVER_ERROR);
     }
 
     public void addProduct(ProductDto productDto) {
@@ -84,21 +97,18 @@ public class ProductService {
         productDao.save(toBeUpdated);
     }
 
-    public void deleteProduct(Long id) throws DataBaseException, ProductNotFoundException {
-        Optional<Product> product = productDao.findById(id);
-        isPresent(product);
-        Product toBeDelete = product.get();
-        Customer customer = customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        if (toBeDelete.getCustomer().getId() == customer.getId()) {
-            productDao.deleteById(id);
-        } else
-            throw new DataBaseException("Data Source issue, could not delete product", INTERNAL_SERVER_ERROR);
-    }
-
-
     private void isPresent(Optional<Product> optionalProduct) throws ProductNotFoundException {
         if (optionalProduct.isPresent()) {
             return;
+        }
+        throw new ProductNotFoundException("Product not found!", INTERNAL_SERVER_ERROR);
+    }
+
+    private void isPresentList(List <Optional<Product>> optionalProducts) throws ProductNotFoundException {
+        for (Optional<Product> product: optionalProducts){
+            if (product.isPresent()) {
+                return;
+            }
         }
         throw new ProductNotFoundException("Product not found!", INTERNAL_SERVER_ERROR);
     }
@@ -116,5 +126,10 @@ public class ProductService {
     public Page<Product> getProducts(Pageable page) {
         return productRepository.findAll(page);
     }
+
+//    public Page<Product> getProducts(int pageNumber, int pageSize){
+//        Pageable page = PageRequest.of(pageNumber,pageSize);
+//        return productRepository.findAll(page);
+//    }
 
 }
