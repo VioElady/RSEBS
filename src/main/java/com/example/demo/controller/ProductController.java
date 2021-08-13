@@ -32,13 +32,14 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<ProductDto>> getProductForUser(@PathVariable Long id) throws DataBaseException {
-        return new ResponseEntity<>(productService.getAllProductsForUser(id), HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable Long id) throws ProductNotFoundException {
         return productService.getProductById(id);
+    }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<ProductDto>> getProductForUser(@PathVariable Long id) throws DataBaseException {
+        return new ResponseEntity<>(productService.getAllProductsForUser(id), HttpStatus.OK);
     }
 
     @PostMapping

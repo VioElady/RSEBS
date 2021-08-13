@@ -32,19 +32,10 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+
     private final ProductDao productDao;
     private final ProductConverter converter;
     private final CustomerService customerService;
-
-    public List<ProductDto> getAllProductsForUser(Long id) throws DataBaseException {
-        List<Product> products;
-        try {
-            products = productRepository.findProductsByCustomer(customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
-        } catch (Exception e) {
-            throw new DataBaseException("Data base issue!", INTERNAL_SERVER_ERROR);
-        }
-        return converter.modelToDTO(products);
-    }
 
     public ProductDto getProductById(Long id) throws ProductNotFoundException {
         Optional<Product> product;
@@ -57,6 +48,17 @@ public class ProductService {
         List<Product> products;
         try {
             products = productDao.findAll();
+        } catch (Exception e) {
+            throw new DataBaseException("Data base issue!", INTERNAL_SERVER_ERROR);
+        }
+        return converter.modelToDTO(products);
+    }
+
+
+    public List<ProductDto> getAllProductsForUser(Long id) throws DataBaseException {
+        List<Product> products;
+        try {
+            products = productRepository.findProductsByCustomer(customerService.FindUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
         } catch (Exception e) {
             throw new DataBaseException("Data base issue!", INTERNAL_SERVER_ERROR);
         }
@@ -100,15 +102,6 @@ public class ProductService {
     private void isPresent(Optional<Product> optionalProduct) throws ProductNotFoundException {
         if (optionalProduct.isPresent()) {
             return;
-        }
-        throw new ProductNotFoundException("Product not found!", INTERNAL_SERVER_ERROR);
-    }
-
-    private void isPresentList(List <Optional<Product>> optionalProducts) throws ProductNotFoundException {
-        for (Optional<Product> product: optionalProducts){
-            if (product.isPresent()) {
-                return;
-            }
         }
         throw new ProductNotFoundException("Product not found!", INTERNAL_SERVER_ERROR);
     }

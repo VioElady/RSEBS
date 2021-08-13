@@ -4,7 +4,6 @@ import com.example.demo.model.Product;
 import com.example.demo.dto.product.ProductDto;
 import org.springframework.stereotype.Component;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
