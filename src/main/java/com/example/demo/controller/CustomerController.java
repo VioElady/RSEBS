@@ -9,6 +9,8 @@ import com.example.demo.payload.response.MessageResponse;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.service.CustomerService;
 import com.example.demo.service.UserDetailsImpl;
+import io.swagger.annotations.Api;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +19,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Api
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")

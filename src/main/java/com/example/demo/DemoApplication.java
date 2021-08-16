@@ -1,20 +1,13 @@
 package com.example.demo;
 
-import com.example.demo.model.Product;
-import com.example.demo.repository.ProductRepository;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import org.apache.catalina.User;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-
-import java.util.stream.IntStream;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 
 @SpringBootApplication
-@OpenAPIDefinition
+
 public class DemoApplication {
 
     public static void main(String[] args) {

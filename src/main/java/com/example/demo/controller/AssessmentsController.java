@@ -2,14 +2,18 @@ package com.example.demo.controller;
 
 import com.example.demo.exceptionhandling.ProductNotFoundException;
 import com.example.demo.service.AssessmentsService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
-@org.springframework.web.bind.annotation.RestController
+@Api
+@Validated
+@RestController
 @RequestMapping("")
 
 public class AssessmentsController {

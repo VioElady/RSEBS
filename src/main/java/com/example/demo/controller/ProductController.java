@@ -5,20 +5,23 @@ import com.example.demo.exceptionhandling.ProductNotFoundException;
 import com.example.demo.model.Product;
 import com.example.demo.dto.product.ProductDto;
 import com.example.demo.service.ProductService;
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
 @RequiredArgsConstructor
-@org.springframework.web.bind.annotation.RestController
-
 @RequestMapping("/api/products")
+@Api
+@Validated
+@RestController
 
 public class ProductController {
 
