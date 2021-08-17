@@ -17,7 +17,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import static java.util.Collections.singletonList;
 
 @Configuration
-
 @EnableSwagger2
 public class SwaggerConfig {
 
@@ -27,8 +26,8 @@ public class SwaggerConfig {
                 .select().apis(RequestHandlerSelectors.withClassAnnotation(Api.class)).build()
                 .apiInfo(new ApiInfoBuilder()
                         .version("1.0")
-                        .title("MarketPlace")
-                        .description("REST api with spring security")
+                        .title("Market")
+                        .description("RestApi with spring security")
                         .build())
                 .securitySchemes(singletonList(new ApiKey("token", "Authorization", "Header")))
                 .securityContexts(singletonList(SecurityContext.builder()

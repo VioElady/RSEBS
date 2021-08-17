@@ -116,13 +116,13 @@ public class ProductService {
             throw new IllegalArgumentException(errorMessage);
     }
 
-    public Page<Product> getProducts(Pageable page) {
-        return productRepository.findAll(page);
-    }
-
-//    public Page<Product> getProducts(int pageNumber, int pageSize){
-//        Pageable page = PageRequest.of(pageNumber,pageSize);
+//    public Page<Product> getProducts(Pageable page) {
 //        return productRepository.findAll(page);
 //    }
+
+    public Page<Product> getProducts(int pageNumber, int pageSize){
+        Pageable page = PageRequest.of(pageNumber,pageSize);
+        return productRepository.findAll(page);
+    }
 
 }

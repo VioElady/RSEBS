@@ -29,7 +29,7 @@ public class ProductController {
     ProductService productService;
 
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ProductDto>> getAllProducts() throws DataBaseException {
         return new ResponseEntity<>(productService.getAllProducts(), HttpStatus.OK);
     }
@@ -64,14 +64,14 @@ public class ProductController {
     }
 
 
-    @GetMapping("/pagination")
-    Page<Product> getProducts(Pageable page){
-        return productService.getProducts(page);
-    }
-
 //    @GetMapping("/pagination")
-//    Page<Product>getProducts(@RequestParam int pageSize, @RequestParam int pageNumber){
-//        return productService.getProducts(pageNumber,pageSize);
+//    Page<Product> getProducts(Pageable page){
+//        return productService.getProducts(page);
 //    }
+
+    @GetMapping("/pagination")
+    Page<Product>getProducts(@RequestParam int pageSize, @RequestParam int pageNumber){
+        return productService.getProducts(pageNumber,pageSize);
+    }
 
 }

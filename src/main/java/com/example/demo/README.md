@@ -1,5 +1,4 @@
 `````````# Rest Api
-
 ____
 ####*This repository contains the REST API developed for a marketplace.*
 ____
@@ -21,22 +20,22 @@ For building and running the application you need:
 * Maven
 ----
 ##Run the app
-1. Fork this repository and clone it
-   ``
+1. Fork this repository and clone it;
+   
    https://github.com/VioElady/RSEBS
-   ``
-2. Navigate into the folder
-   `
+   
+2. Navigate into the folder;
+   
    cd RSEBS-master
-   `
-3. Install dependencies
-   `
+   
+3. Install dependencies;
+   
    mvn install
-   `
-4. Run the project
-   `
+   
+4. Run the project;
+   
    mvn spring-boot:run
-   `
+   
 ----
 ##URL
 http://localhost:8080/swagger-ui.html
@@ -73,44 +72,34 @@ spring.jpa.hibernate.ddl-auto=update
 6. List my-products
 7. Like/Unlike
 ----
-## Register a new user
-`
+## Register a new user: /api/auth/sign-up
 {
 "email": "string",
 "password": "string",
 "username": "string"
 }
-`
 ----
-## GET all products
-
-page size: the number of products on a given page
-
+## Login a user: /api/auth/sign-in
+{
+"password": "string",
+"username": "string"
+}
+----
+## GET all products:/api/products/all
 ----
 ##CRUD
-####In order to be able to use CRUD, all you have to do is login
-
 ----
-### Create a new Products:
-
-/api/v1/products
-
-`
+### Create a new Products:/api/v1/products
 {
+"description": "string",
 "name": "string",
 "price": 0
 }
 `
 ----
-### Show all product by user
-
-Just click run the application has already saved the login user
-
+### Show all product by user:/api/products/user
 ----
-### Update the product
-
-/api/v1/products/{id}
-
+### Update the product:/api/products/{id}
 Enter the product id you want to update
 `
 {
@@ -119,20 +108,21 @@ Enter the product id you want to update
 "title":"string"
 }
 `
-
 ----
-### Delete the product
+### Delete the product:/api/products/{id}
 
 Enter the product id you want to delete
 
 Example : id = 4
-
 ----
+##pagination products:http:api/products/pagination?pageNumber=1&pageSize=10
+----
+
 ## Like/Unlike
 
 Just enter the ID of the product you want to appreciate. It is not possible to appreciate your own product
 
 ----
-/like
-/dislike
-----````````
+/likes/{productId}
+/unlikes/{productId}
+----
